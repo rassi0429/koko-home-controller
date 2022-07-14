@@ -41,6 +41,11 @@ app.get("/aircon", async (req, res) => {
     res.send(state)
 })
 
+app.get("/temp", async (req, res) => {
+    const { data } = await axios.get(nature_endpoint + "/1/devices", { headers: { "Authorization": `Bearer ${process.env.NATURE_TOKEN}` } })
+    res.send(data[0].newest_events.te.val + "度")
+})
+
 app.post("/aircon", async (req, res) => {
     const query = req.query.button === "on" ? "power-on" : "power-off"
     const form = new formData()
