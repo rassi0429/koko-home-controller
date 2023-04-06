@@ -41,9 +41,25 @@ app.get("/aircon", async (req, res) => {
     res.send(state)
 })
 
-app.get("/temp", async (req, res) => {
+let tmpCache = 0
+
+const  updateTemp = async () => {
     const { data } = await axios.get(nature_endpoint + "/1/devices", { headers: { "Authorization": `Bearer ${process.env.NATURE_TOKEN}` } })
-    res.send(data[0].newest_events.te.val + "度")
+    tmpCache = data[0].newest_events.te.val
+}
+
+setInterval(() => {updateTemp()}, 60 * 1000)
+
+app.get("/temp", async (req, res) => {
+    res.send(tmpCache + "度")
+})
+
+app.get("/prom", (req, res) => {
+    const text = `# HELP kokoa_home_temp1 templature of kokoa home
+    # TYPE kokoa_home_temp1 gauge
+    kokoa_home_temp1 ${tmpCache}
+    `
+    res.send(text)
 })
 
 app.post("/aircon", async (req, res) => {
