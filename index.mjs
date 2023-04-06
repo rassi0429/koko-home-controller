@@ -56,9 +56,9 @@ app.get("/temp", async (req, res) => {
 
 app.get("/prom", (req, res) => {
     const text = `# HELP kokoa_home_temp1 templature of kokoa home
-    # TYPE kokoa_home_temp1 gauge
-    kokoa_home_temp1 ${tmpCache}
-    `
+# TYPE kokoa_home_temp1 gauge
+kokoa_home_temp1 ${tmpCache}
+`
     res.header('Content-Type', 'text/plain;charset=utf-8');
     res.send(text)
 })
