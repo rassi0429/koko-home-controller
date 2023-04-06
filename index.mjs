@@ -59,6 +59,7 @@ app.get("/prom", (req, res) => {
     # TYPE kokoa_home_temp1 gauge
     kokoa_home_temp1 ${tmpCache}
     `
+    res.header('Content-Type', 'text/plain;charset=utf-8');
     res.send(text)
 })
 
